@@ -66,7 +66,7 @@ export function WaitlistForm() {
               : "text-brand-muted hover:text-brand-dark"
           }`}
         >
-          I&apos;m a Worker
+          I&apos;m a Helper
         </button>
         <button
           type="button"

@@ -10,11 +10,11 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "MarketFolk — Find Verified Workers for Your Farmers Market Booth",
+  title: "MarketFolk — Find Verified Helpers for Your Farmers Market Booth",
   description:
-    "The first marketplace connecting farmers market vendors with trusted, ID-verified workers. No more word-of-mouth hiring.",
+    "The first marketplace connecting farmers market vendors with trusted, ID-verified helpers. No more word-of-mouth hiring.",
   openGraph: {
-    title: "MarketFolk — Verified Farmers Market Workers",
+    title: "MarketFolk — Verified Farmers Market Helpers",
     description:
       "Find reliable, ID-verified help for your farmers market booth.",
     type: "website",

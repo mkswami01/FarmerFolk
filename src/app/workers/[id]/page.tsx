@@ -16,7 +16,7 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
     return {
       title: worker
         ? `${worker.fullName} — MarketFolk`
-        : "Worker Not Found — MarketFolk",
+        : "Helper Not Found — MarketFolk",
     };
   });
 }
@@ -42,7 +42,7 @@ export default async function WorkerProfilePage({
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
-        Back to all workers
+        Back to all helpers
       </Link>
 
       <div className="mt-6 rounded-xl bg-white p-6 shadow-sm sm:p-8">
@@ -123,7 +123,7 @@ export default async function WorkerProfilePage({
         {/* CTA */}
         <div className="mt-8 rounded-lg bg-brand-green/5 p-6 text-center">
           <p className="text-brand-dark">
-            Interested in hiring{" "}
+            Interested in connecting with{" "}
             <span className="font-semibold">{worker.fullName}</span>?
           </p>
           <Link

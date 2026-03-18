@@ -19,7 +19,7 @@ export function Navbar() {
             href="/#workers"
             className="text-sm font-medium text-white/90 transition-colors hover:text-white"
           >
-            Workers
+            Helpers
           </Link>
           <Link
             href="/#vendors"
@@ -59,7 +59,7 @@ export function Navbar() {
             className="block py-2 text-sm font-medium text-white/90"
             onClick={() => setMenuOpen(false)}
           >
-            Workers
+            Helpers
           </Link>
           <Link
             href="/#vendors"

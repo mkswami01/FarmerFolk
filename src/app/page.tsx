@@ -13,10 +13,10 @@ export default function BrowsePage() {
       <section id="workers" className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-8 text-center">
           <h2 className="text-2xl font-bold text-brand-dark sm:text-3xl">
-            Verified Workers Ready to Help
+            Verified Helpers Ready to Help
           </h2>
           <p className="mt-2 text-brand-muted">
-            Browse trusted, ID-verified workers available at farmers markets
+            Browse trusted, ID-verified helpers available at farmers markets
             near you.
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function BrowsePage() {
             Ready to join the marketplace?
           </h3>
           <p className="mt-2 text-brand-muted">
-            Whether you&apos;re a vendor looking for reliable help or a worker
+            Whether you&apos;re a vendor looking for reliable help or a helper
             looking for booth shifts — we&apos;ve got you covered.
           </p>
           <Link

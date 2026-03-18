@@ -7,7 +7,7 @@ export function Footer() {
         <p className="text-sm text-brand-muted">
           <span className="font-semibold text-brand-green">Market</span>
           <span className="font-semibold text-brand-amber">Folk</span>
-          {" "}&copy; 2026 &mdash; Connecting farmers market vendors with verified workers.
+          {" "}&copy; 2026 &mdash; Connecting farmers market vendors with verified helpers.
         </p>
         <Link
           href="/waitlist"

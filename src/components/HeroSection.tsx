@@ -5,7 +5,7 @@ export function HeroSection() {
     <section className="bg-brand-green">
       <div className="mx-auto max-w-6xl px-4 py-16 text-center sm:py-24">
         <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">
-          Find Verified Workers for Your{" "}
+          Find Verified Helpers for Your{" "}
           <span className="text-brand-amber">Farmers Market</span> Booth
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-white/80">
@@ -23,7 +23,7 @@ export function HeroSection() {
             href="#workers"
             className="rounded-full border border-white/30 px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
           >
-            Browse Workers
+            Browse Helpers
           </a>
         </div>
       </div>

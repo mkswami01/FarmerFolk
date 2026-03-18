@@ -13,7 +13,7 @@ export default function WaitlistPage() {
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-brand-muted">
           Be the first to know when we launch. Whether you&apos;re a vendor
-          looking for reliable help or a worker looking for booth shifts,
+          looking for reliable help or a helper looking for booth shifts,
           we&apos;ve got you covered.
         </p>
       </div>
@@ -36,7 +36,7 @@ export default function WaitlistPage() {
           <ul className="mt-3 space-y-2 text-sm text-brand-muted">
             <li className="flex items-start gap-2">
               <span className="mt-1 text-brand-green">&#10003;</span>
-              Browse verified, ID-checked workers
+              Browse verified, ID-checked helpers
             </li>
             <li className="flex items-start gap-2">
               <span className="mt-1 text-brand-green">&#10003;</span>
@@ -60,7 +60,7 @@ export default function WaitlistPage() {
             </svg>
           </div>
           <h3 className="text-lg font-semibold text-brand-dark">
-            For Workers
+            For Helpers
           </h3>
           <ul className="mt-3 space-y-2 text-sm text-brand-muted">
             <li className="flex items-start gap-2">
