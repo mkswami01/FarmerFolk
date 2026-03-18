@@ -1,26 +1,23 @@
 import type { VerificationLevel } from "@/data/workers";
 
 const config = {
-  "id-confirmed": {
-    label: "ID Confirmed",
-    bg: "bg-brand-green/10",
-    text: "text-brand-green",
-    circleFill: "none",
-    circleStroke: "#2D6A4F",
-  },
   verified: {
     label: "Verified",
     bg: "bg-brand-green/10",
     text: "text-brand-green",
-    circleFill: "#2D6A4F",
-    circleStroke: "none",
+    fill: "#2D6A4F",
   },
-  "background-checked": {
-    label: "Background Checked",
+  "id-confirmed": {
+    label: "ID Confirmed",
     bg: "bg-brand-amber/10",
     text: "text-brand-amber",
-    circleFill: "#F4A228",
-    circleStroke: "none",
+    fill: "#F4A228",
+  },
+  none: {
+    label: "Yet to be Verified",
+    bg: "bg-brand-red/10",
+    text: "text-brand-red",
+    fill: "#C1534A",
   },
 };
 
@@ -28,7 +25,7 @@ export function VerifiedBadge({
   level,
   size = "sm",
 }: {
-  level: Exclude<VerificationLevel, "none">;
+  level: VerificationLevel;
   size?: "sm" | "lg";
 }) {
   const isLarge = size === "lg";
@@ -45,21 +42,23 @@ export function VerifiedBadge({
         viewBox="0 0 20 20"
         fill="none"
       >
-        <circle
-          cx="10"
-          cy="10"
-          r={c.circleFill === "none" ? "9" : "10"}
-          fill={c.circleFill}
-          stroke={c.circleStroke}
-          strokeWidth={c.circleFill === "none" ? "2" : "0"}
-        />
-        <path
-          d="M6 10.5L8.5 13L14 7.5"
-          stroke={c.circleFill === "none" ? c.circleStroke : "white"}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <circle cx="10" cy="10" r="10" fill={c.fill} />
+        {level === "none" ? (
+          <path
+            d="M7 7L13 13M13 7L7 13"
+            stroke="white"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        ) : (
+          <path
+            d="M6 10.5L8.5 13L14 7.5"
+            stroke="white"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        )}
       </svg>
       <span className={c.text}>{c.label}</span>
     </span>

@@ -60,11 +60,9 @@ export default async function WorkerProfilePage({
             <h1 className="text-2xl font-bold text-brand-dark">
               {worker.fullName}
             </h1>
-            {worker.verification !== "none" && (
-              <div className="mt-2">
-                <VerifiedBadge level={worker.verification} size="lg" />
-              </div>
-            )}
+            <div className="mt-2">
+              <VerifiedBadge level={worker.verification} size="lg" />
+            </div>
             <div className="mt-2">
               <AvailabilityBadge availability={worker.availability} />
             </div>

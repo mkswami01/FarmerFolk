@@ -1,4 +1,4 @@
-export type VerificationLevel = "none" | "id-confirmed" | "verified" | "background-checked";
+export type VerificationLevel = "none" | "id-confirmed" | "verified";
 
 export interface Worker {
   id: string;
@@ -20,7 +20,7 @@ export const workers: Worker[] = [
     bio: "Experienced booth operator with 3 years at Fort Collins markets. Reliable, great with customers, and comfortable handling cash and card payments. I love connecting with the community and helping vendors have a smooth market day.",
     availability: "Weekends",
     marketsWorked: ["Fort Collins Farmers Market", "Old Town Saturday Market", "Larimer County Farmers Market"],
-    verification: "background-checked",
+    verification: "verified",
     yearsExperience: 3,
     skills: ["Cash handling", "Customer service", "Setup/teardown"],
   },
@@ -53,7 +53,7 @@ export const workers: Worker[] = [
     bio: "Retired chef who loves being around fresh produce and local food vendors. I bring food handling knowledge, a warm personality, and years of experience working with the public. Looking for weekend morning shifts.",
     availability: "Weekend mornings",
     marketsWorked: ["Larimer County Farmers Market", "Fort Collins Winter Market"],
-    verification: "background-checked",
+    verification: "verified",
     yearsExperience: 4,
     skills: ["Food handling", "Customer service", "Product knowledge"],
   },
