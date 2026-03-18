@@ -26,9 +26,9 @@ export function WorkerCard({ worker }: { worker: Worker }) {
               {worker.fullName}
             </h3>
           </div>
-          {worker.verified && (
+          {worker.verification !== "none" && (
             <div className="mt-1">
-              <VerifiedBadge />
+              <VerifiedBadge level={worker.verification} />
             </div>
           )}
         </div>
