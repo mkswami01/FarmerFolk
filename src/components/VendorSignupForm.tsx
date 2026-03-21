@@ -34,6 +34,7 @@ export function VendorSignupForm() {
           website,
           businessName: siteData.businessName || "",
           description: siteData.description || "",
+          headings: siteData.headings || [],
           image: siteData.image || "",
         };
         sessionStorage.setItem("vendor-demo", JSON.stringify(vendorData));

@@ -11,6 +11,7 @@ interface VendorData {
   website: string;
   businessName: string;
   description: string;
+  headings?: string[];
   image: string;
 }
 
@@ -34,40 +35,61 @@ function generateProfile(data: VendorData) {
     .slice(0, 2)
     .toUpperCase();
 
-  // Use crawled description, or provided description, or generic
+  // Build description from all available data
+  const allText = [
+    data.description || "",
+    ...(data.headings || []),
+    displayName,
+  ].join(" ").toLowerCase();
+
+  // Use crawled description as bio, enrich if too short
   let bio: string;
-  if (data.description) {
+  if (data.description && data.description.length > 40) {
     bio = data.description;
+  } else if (data.description) {
+    bio = `${data.description} ${displayName} is a local business proudly serving the Northern Colorado farmers market community.`;
   } else if (data.website) {
-    bio = `${displayName} is a local business serving the Northern Colorado farmers market community. Visit ${data.website} to learn more.`;
+    bio = `${displayName} is a local business serving the Northern Colorado farmers market community.`;
   } else {
     bio = `${displayName} is a local business serving the Northern Colorado farmers market community.`;
   }
 
-  // Infer products from description
-  const desc = (data.description || displayName).toLowerCase();
-  let products = "Local goods and products";
-  if (desc.includes("bake") || desc.includes("bread") || desc.includes("pastry")) {
-    products = "Baked goods, bread, pastries";
-  } else if (desc.includes("honey") || desc.includes("bee")) {
-    products = "Raw honey, beeswax products";
-  } else if (desc.includes("vegetable") || desc.includes("produce") || desc.includes("farm")) {
-    products = "Fresh produce, seasonal vegetables";
-  } else if (desc.includes("craft") || desc.includes("pottery") || desc.includes("art")) {
-    products = "Handmade crafts and artisan goods";
-  } else if (desc.includes("salsa") || desc.includes("sauce") || desc.includes("spice")) {
-    products = "Salsas, sauces, and spices";
-  } else if (desc.includes("ice cream") || desc.includes("dessert") || desc.includes("sweet")) {
-    products = "Ice cream, desserts, and sweet treats";
-  } else if (desc.includes("coffee") || desc.includes("tea")) {
-    products = "Coffee, tea, and beverages";
-  } else if (desc.includes("meat") || desc.includes("jerky") || desc.includes("ranch")) {
-    products = "Locally raised meats and ranch products";
-  } else if (desc.includes("flower") || desc.includes("plant") || desc.includes("garden")) {
-    products = "Fresh flowers, plants, and garden goods";
-  } else if (desc.includes("soap") || desc.includes("lotion") || desc.includes("skin")) {
-    products = "Handmade soaps and skincare products";
+  // Infer products from all crawled text (description + headings + name)
+  const productMatches: string[] = [];
+  const productMap: [RegExp, string][] = [
+    [/honey|bee|hive|nectar|pollen|propolis/, "Raw honey and bee products"],
+    [/bake|bread|pastry|sourdough|cookie|cake|pie/, "Baked goods and pastries"],
+    [/vegetable|produce|farm|organic|greens|lettuce/, "Fresh produce and vegetables"],
+    [/craft|pottery|ceramic|art|handmade|handcraft/, "Handmade crafts and artisan goods"],
+    [/salsa|sauce|spice|pepper|hot sauce/, "Salsas, sauces, and spices"],
+    [/ice cream|gelato|dessert|sweet|candy|chocolate/, "Ice cream, desserts, and treats"],
+    [/coffee|tea|brew|roast|espresso/, "Coffee, tea, and beverages"],
+    [/meat|jerky|ranch|beef|pork|sausage|bacon/, "Locally raised meats"],
+    [/flower|plant|garden|bouquet|floral/, "Fresh flowers and plants"],
+    [/soap|lotion|skin|balm|candle|wax/, "Soaps, candles, and skincare"],
+    [/jam|jelly|preserve|marmalade|canned/, "Jams, preserves, and canned goods"],
+    [/cheese|dairy|milk|yogurt|butter/, "Artisan dairy and cheese"],
+    [/wine|cider|mead|kombucha|ferment/, "Beverages and fermented goods"],
+    [/olive|oil|vinegar/, "Oils and vinegars"],
+    [/herb|lavender|mint|basil/, "Fresh herbs and botanicals"],
+  ];
+
+  for (const [pattern, label] of productMap) {
+    if (pattern.test(allText)) {
+      productMatches.push(label);
+    }
   }
+
+  // Use headings as additional product hints
+  const meaningfulHeadings = (data.headings || [])
+    .filter((h) => h.length > 3 && h.length < 60)
+    .slice(0, 4);
+
+  const products = productMatches.length > 0
+    ? productMatches.slice(0, 3).join(", ")
+    : meaningfulHeadings.length > 0
+      ? meaningfulHeadings.join(", ")
+      : "Local goods and products";
 
   // Use crawled OG image or generate initials avatar
   const photo =
