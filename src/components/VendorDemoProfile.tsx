@@ -7,32 +7,45 @@ import Link from "next/link";
 import { MarketTag } from "./MarketTag";
 
 interface VendorData {
-  businessName: string;
+  email: string;
   website: string;
+  businessName: string;
   description: string;
+  image: string;
 }
 
 function generateProfile(data: VendorData) {
-  const name = data.businessName;
-  const initials = name
+  // Use crawled business name, or derive from email domain
+  const name =
+    data.businessName ||
+    data.email.split("@")[1]?.split(".")[0]?.replace(/-/g, " ") ||
+    "My Business";
+
+  // Capitalize each word
+  const displayName = name
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
+  const initials = displayName
     .split(/\s+/)
     .map((w) => w[0])
     .join("")
     .slice(0, 2)
     .toUpperCase();
 
-  // Generate bio from description or website
+  // Use crawled description, or provided description, or generic
   let bio: string;
   if (data.description) {
     bio = data.description;
   } else if (data.website) {
-    bio = `Visit us at ${data.website} to learn more about ${name}. We're proud to be part of the local farmers market community.`;
+    bio = `${displayName} is a local business serving the Northern Colorado farmers market community. Visit ${data.website} to learn more.`;
   } else {
-    bio = `${name} is a local business serving the Northern Colorado farmers market community.`;
+    bio = `${displayName} is a local business serving the Northern Colorado farmers market community.`;
   }
 
   // Infer products from description
-  const desc = (data.description || data.businessName).toLowerCase();
+  const desc = (data.description || displayName).toLowerCase();
   let products = "Local goods and products";
   if (desc.includes("bake") || desc.includes("bread") || desc.includes("pastry")) {
     products = "Baked goods, bread, pastries";
@@ -54,18 +67,22 @@ function generateProfile(data: VendorData) {
     products = "Fresh flowers, plants, and garden goods";
   } else if (desc.includes("soap") || desc.includes("lotion") || desc.includes("skin")) {
     products = "Handmade soaps and skincare products";
-  } else if (data.description && data.description.length > 10) {
-    products = data.description.slice(0, 80);
   }
 
+  // Use crawled OG image or generate initials avatar
+  const photo =
+    data.image ||
+    `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(initials)}&backgroundColor=2D6A4F`;
+
   return {
-    businessName: name,
+    businessName: displayName,
+    email: data.email,
     initials,
     bio,
     products,
     website: data.website,
     markets: ["Fort Collins Farmers Market"],
-    photo: `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(initials)}&backgroundColor=2D6A4F`,
+    photo,
   };
 }
 
@@ -122,7 +139,7 @@ export function VendorDemoProfile() {
             alt={profile.businessName}
             width={96}
             height={96}
-            className="h-24 w-24 rounded-xl bg-brand-cream"
+            className="h-24 w-24 rounded-xl bg-brand-cream object-cover"
             unoptimized
           />
           <div className="text-center sm:text-left">
@@ -136,6 +153,7 @@ export function VendorDemoProfile() {
               </svg>
               Verified Vendor
             </span>
+            <p className="mt-1 text-sm text-brand-muted">{profile.email}</p>
           </div>
         </div>
 
