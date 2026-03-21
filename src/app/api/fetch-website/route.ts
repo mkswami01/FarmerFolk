@@ -131,12 +131,27 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Parse the given URL to get the root domain
     const parsed = new URL(url);
-    const rootUrl = `${parsed.protocol}//${parsed.host}`;
-    const isRootPage = parsed.pathname === "/" || parsed.pathname === "";
 
-    // Always fetch the given page for content
+    // Business name: derive from domain name
+    // e.g. "www.papajoeshoney.com" → "Papajoeshoney" → "Papa Joes Honey"
+    const hostname = parsed.hostname.replace(/^www\./, "");
+    const domainBase = hostname.split(".")[0]; // "papajoeshoney"
+    // Insert spaces before capital letters or between lowercase-uppercase transitions
+    // Then split on common word boundaries in domain names
+    const businessName = domainBase
+      // Insert space before sequences of uppercase or between camelCase
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      // Split common compound words (e.g. "papajoeshoney" → "papa joes honey")
+      .replace(/([a-z])(papa|joe|honey|farm|ranch|market|craft|bake|sweet|fresh|green|mountain|valley|wild|north|south|east|west|fort|old|town|creek|river|lake|golden|silver|sun|moon|star|bear|fox|bee|oak|pine|maple|cedar|sage|rose|lily|daisy)/gi, "$1 $2")
+      .replace(/(papa|joe|honey|farm|ranch|market|craft|bake|sweet|fresh|green|mountain|valley|wild|north|south|east|west|fort|old|town|creek|river|lake|golden|silver|sun|moon|star|bear|fox|bee|oak|pine|maple|cedar|sage|rose|lily|daisy)([a-z])/gi, "$1 $2")
+      .split(/[\s-_]+/)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // Fetch the given page for content
     const pageHtml = await fetchPage(url);
     if (!pageHtml) {
       return NextResponse.json(
@@ -148,34 +163,8 @@ export async function POST(request: Request) {
     // Extract content (description, headings, image) from the given page
     const content = extractContent(pageHtml, url);
 
-    // For business name: use the root page if user gave a subpage
-    let businessName = "";
-    if (isRootPage) {
-      businessName = extractBusinessName(pageHtml);
-    } else {
-      // Fetch root page separately for the business name
-      const rootHtml = await fetchPage(rootUrl);
-      if (rootHtml) {
-        businessName = extractBusinessName(rootHtml);
-        // Also grab the root image if the subpage doesn't have one
-        if (!content.image) {
-          const rootImage =
-            get(rootHtml, /<meta[^>]+property="og:image"[^>]+content="([^"]*)"/) ||
-            get(rootHtml, /<meta[^>]+content="([^"]*)"[^>]+property="og:image"/);
-          if (rootImage) {
-            content.image = rootImage.startsWith("http")
-              ? rootImage
-              : new URL(rootImage, rootUrl).href;
-          }
-        }
-      } else {
-        // Fallback: get name from the subpage itself
-        businessName = extractBusinessName(pageHtml);
-      }
-    }
-
     return NextResponse.json({
-      businessName: businessName || "",
+      businessName,
       description: content.description || "",
       headings: content.headings || [],
       image: content.image || "",
